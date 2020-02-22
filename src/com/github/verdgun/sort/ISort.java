@@ -1,5 +1,10 @@
 package com.github.verdgun.sort;
 
+/**
+ * 排序算法接口
+ *
+ * @param <T> 可比较类型
+ */
 public interface ISort<T extends Comparable> {
     T[] sort(T[] unsorted);
 
