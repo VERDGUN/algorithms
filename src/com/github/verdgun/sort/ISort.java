@@ -6,6 +6,8 @@ package com.github.verdgun.sort;
  * @param <T> 可比较类型
  */
 public interface ISort<T extends Comparable> {
+    int INSERTION_SORT_CUTOFF = 8;
+
     T[] sort(T[] unsorted);
 
     default boolean less(T v, T w) {
