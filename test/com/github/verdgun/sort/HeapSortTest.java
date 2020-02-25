@@ -3,8 +3,7 @@ package com.github.verdgun.sort;
 import java.util.HashSet;
 import java.util.Random;
 
-class SelectionSortTest {
-
+public class HeapSortTest {
     @org.junit.jupiter.api.Test
     void sort() {
         int n = 30;
@@ -20,7 +19,7 @@ class SelectionSortTest {
         selectionSort.sort(a);
         selectionSort.show(a);*/
 
-        (new SelectionSort()).sort(a);
+        (new HeapSort()).sort(a);
         for (int i = 0; i < a.length; i++) {
             System.out.print(a[i] + ", ");
         }

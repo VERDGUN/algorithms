@@ -5,11 +5,11 @@ public class HeapSort implements ISort {
     public Comparable[] sort(Comparable[] unsorted) {
         int length = unsorted.length;
         //堆初始化(大根堆)
-        for (int i = length / 2; i >= 1; i--) {
+        for (int i = length / 2; i > 0; i--) {
             sink(unsorted, i, length);
         }
 
-        for (int i = length; i > 0; ) {
+        for (int i = length; i > 1; ) {
             exch(unsorted, 1, i--);
             sink(unsorted, 1, i);
         }
@@ -35,13 +35,13 @@ public class HeapSort implements ISort {
      * @param end      末尾节点
      */
     private void sink(Comparable[] unsorted, int i, int end) {
-        int child = 2 * i;
-        while (child <= end) {
+        while (2 * i <= end) {
+            int child = 2 * i;
             //取出
             if (child < end && less(unsorted, child, child + 1)) child++;
-            if (!less(i, child)) break;
+            if (!less(unsorted, i, child)) break;
             exch(unsorted, i, child);
-            child *= 2;
+            i = child;
         }
     }
 
