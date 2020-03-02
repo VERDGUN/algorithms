@@ -10,7 +10,7 @@ import lombok.Data;
  */
 @Data
 public class Node<Key extends Comparable, Value> {
-    private Node<Key, Value> previous, left, right;
+    private Node<Key, Value> parent, left, right;
     private int size;
     private Key key;
     private Value value;

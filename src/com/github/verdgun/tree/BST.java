@@ -1,9 +1,7 @@
 package com.github.verdgun.tree;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 /**
  * 二叉查找树
@@ -63,12 +61,12 @@ public class BST<Key extends Comparable<Key>, Value> {
             Node<Key, Value> node = put(root.getLeft(), key, value);
             root.setLeft(node);
             root.setSize(root.getSize() + 1);
-            node.setPrevious(root);
+            node.setParent(root);
         } else {
             Node<Key, Value> node = put(root.getRight(), key, value);
             root.setRight(node);
             root.setSize(root.getSize() + 1);
-            node.setPrevious(root);
+            node.setParent(root);
         }
 //        root.setSize(root.getLeft().getSize() + root.getRight().getSize() + 1);
         return root;
@@ -218,7 +216,7 @@ public class BST<Key extends Comparable<Key>, Value> {
 
     private Node<Key, Value> deleteMin(Node<Key, Value> root) {
         if (root.getLeft() == null) {
-            root.getRight().setPrevious(root.getPrevious());
+            root.getRight().setParent(root.getParent());
             return root.getRight();
         }
         root.setLeft(deleteMin(root.getLeft()));
@@ -232,7 +230,7 @@ public class BST<Key extends Comparable<Key>, Value> {
 
     private Node<Key, Value> deleteMax(Node<Key, Value> root) {
         if (root.getRight() == null) {
-            root.getLeft().setPrevious(root.getPrevious());
+            root.getLeft().setParent(root.getParent());
             return root.getLeft();
         }
 
@@ -255,7 +253,7 @@ public class BST<Key extends Comparable<Key>, Value> {
             Node<Key, Value> subRoot = delete(root.getLeft(), key);
             root.setLeft(subRoot);
             if (subRoot != null) {
-                subRoot.setPrevious(root);
+                subRoot.setParent(root);
             }
 
 
@@ -263,10 +261,10 @@ public class BST<Key extends Comparable<Key>, Value> {
             Node<Key, Value> subRoot = delete(root.getRight(), key);
             root.setRight(subRoot);
             if (subRoot != null) {
-                subRoot.setPrevious(root);
+                subRoot.setParent(root);
             }
         } else {
-            root.setPrevious(null);
+            root.setParent(null);
             if (root.getRight() == null) {
                 return root.getLeft();
             }
@@ -278,12 +276,12 @@ public class BST<Key extends Comparable<Key>, Value> {
             root = min(root);
 
             Node left = temp.getLeft();
-            left.setPrevious(root);
+            left.setParent(root);
             root.setLeft(left);
 
             root.setRight(deleteMin(temp.getRight()));
 
-            root.getRight().setPrevious(root);
+            root.getRight().setParent(root);
         }
 
         return root;
