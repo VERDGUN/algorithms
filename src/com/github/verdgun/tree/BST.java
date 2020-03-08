@@ -273,7 +273,7 @@ public class BST<Key extends Comparable<Key>, Value> {
             }
 
             Node temp = root;
-            root = min(root);
+            root = min(root.getRight());
 
             Node left = temp.getLeft();
             left.setParent(root);
