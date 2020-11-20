@@ -1,33 +1,32 @@
 package com.github.verdgun.tree;
 
-import javax.swing.tree.TreeNode;
 import java.util.NoSuchElementException;
 
-public class RedBlackTree<Key extends Comparable<Key>, Value> {
-    private RBNode<Key, Value> root;
+public class RedBlackTree<K extends Comparable<K>, V> {
+    private RBNode<K, V> root;
 
     public int size() {
         return root.getSize();
     }
 
-    public void put(Key key, Value value) {
+    public void put(K key, V value) {
         root = put(root, key, value);
         root.setRed(false);
     }
 
-    private RBNode<Key, Value> put(RBNode<Key, Value> root, Key key, Value value) {
+    private RBNode<K, V> put(RBNode<K, V> root, K key, V value) {
         if (root == null) {
-            return RBNode.<Key, Value>builder().key(key).value(value).red(true).size(1).build();
+            return RBNode.<K, V>builder().key(key).value(value).red(true).size(1).build();
         }
 
         int compare = key.compareTo(root.getKey());
         if (compare == 0) {
             root.setValue(value);
         } else if (compare < 0) {
-            RBNode<Key, Value> node = put(root.getLeft(), key, value);
+            RBNode<K, V> node = put(root.getLeft(), key, value);
             root.setLeft(node);
         } else {
-            RBNode<Key, Value> node = put(root.getRight(), key, value);
+            RBNode<K, V> node = put(root.getRight(), key, value);
             root.setRight(node);
         }
 
@@ -55,7 +54,7 @@ public class RedBlackTree<Key extends Comparable<Key>, Value> {
      *
      * @param node 节点
      */
-    private void flipColor(RBNode<Key, Value> node) {
+    private void flipColor(RBNode<K, V> node) {
         node.setRed(!node.isRed());
         node.getLeft().setRed(!node.getLeft().isRed());
         node.getRight().setRed(!node.getRight().isRed());
@@ -67,8 +66,8 @@ public class RedBlackTree<Key extends Comparable<Key>, Value> {
      * @param root 父结点
      * @return 左旋后的父结点
      */
-    private RBNode<Key, Value> rotateLeft(RBNode<Key, Value> root) {
-        RBNode<Key, Value> right = root.getRight();
+    private RBNode<K, V> rotateLeft(RBNode<K, V> root) {
+        RBNode<K, V> right = root.getRight();
         //交换父结点(root)和右子结点的连接,使右子结点成为父结点
         root.setRight(right.getLeft());
         right.setLeft(root);
@@ -89,8 +88,8 @@ public class RedBlackTree<Key extends Comparable<Key>, Value> {
      * @param root 父结点
      * @return 右旋后的父结点
      */
-    private RBNode<Key, Value> rotateRight(RBNode<Key, Value> root) {
-        RBNode<Key, Value> left = root.getLeft();
+    private RBNode<K, V> rotateRight(RBNode<K, V> root) {
+        RBNode<K, V> left = root.getLeft();
 
         root.setLeft(left.getRight());
         left.setRight(root);
@@ -105,7 +104,7 @@ public class RedBlackTree<Key extends Comparable<Key>, Value> {
         return left;
     }
 
-    private boolean isRed(RBNode<Key, Value> node) {
+    private boolean isRed(RBNode<K, V> node) {
         return node != null ? node.isRed() : false;
     }
 
@@ -123,7 +122,7 @@ public class RedBlackTree<Key extends Comparable<Key>, Value> {
         }
     }
 
-    private RBNode<Key, Value> deleteMin(RBNode<Key, Value> node) {
+    private RBNode<K, V> deleteMin(RBNode<K, V> node) {
         //此处实现真正的删除操作,即当该节点没有左子结点时,它就是最小的那个节点
         if (node.getLeft() == null) {
             return null;
@@ -143,7 +142,7 @@ public class RedBlackTree<Key extends Comparable<Key>, Value> {
         return balance(node);
     }
 
-    private RBNode<Key, Value> balance(RBNode<Key, Value> node) {
+    private RBNode<K, V> balance(RBNode<K, V> node) {
         if (node.getRight().isRed()) {
             node = rotateLeft(node);
         }
@@ -164,7 +163,7 @@ public class RedBlackTree<Key extends Comparable<Key>, Value> {
         return node;
     }
 
-    private RBNode<Key, Value> moveRedLeft(RBNode<Key, Value> node) {
+    private RBNode<K, V> moveRedLeft(RBNode<K, V> node) {
         //反转颜色,由于${!isRed(node.getLeft()) && !isRed(node.getRight())}=true,转换后node、node.left、node.right组成一个3-节点
         flipColor(node);
         //如果node的右子节点的左子结点是红节点,说明node的右子节点不是最小值,需要进行右旋变换
@@ -195,7 +194,7 @@ public class RedBlackTree<Key extends Comparable<Key>, Value> {
         }
     }
 
-    private RBNode<Key, Value> deleteMax(RBNode<Key, Value> root) {
+    private RBNode<K, V> deleteMax(RBNode<K, V> root) {
         if (root.getRight() == null) {
             return null;
         }
@@ -209,7 +208,7 @@ public class RedBlackTree<Key extends Comparable<Key>, Value> {
         return balance(root);
     }
 
-    private RBNode<Key, Value> moveRedRight(RBNode<Key, Value> node) {
+    private RBNode<K, V> moveRedRight(RBNode<K, V> node) {
         flipColor(node);
         if (isRed(node.getLeft().getLeft())) {
             node = rotateRight(node);
@@ -223,7 +222,7 @@ public class RedBlackTree<Key extends Comparable<Key>, Value> {
         return root == null;
     }
 
-    public void delete(Key key) {
+    public void delete(K key) {
         if (key == null) throw new IllegalArgumentException("argument to delete() is null");
         if (!contains(key)) return;
 
@@ -233,7 +232,7 @@ public class RedBlackTree<Key extends Comparable<Key>, Value> {
         delete(root, key);
     }
 
-    private RBNode<Key, Value> delete(RBNode<Key, Value> root, Key key) {
+    private RBNode<K, V> delete(RBNode<K, V> root, K key) {
         if (key.compareTo(root.getKey()) < 0) {
             if (!isRed(root.getLeft()) && !isRed(root.getRight()))
                 root = moveRedLeft(root);
@@ -256,8 +255,8 @@ public class RedBlackTree<Key extends Comparable<Key>, Value> {
 
             if (key.compareTo(root.getKey()) == 0) {
                 RBNode temp = min(root.getRight());
-                root.setKey((Key) temp.getKey());
-                root.setValue((Value) temp.getValue());
+                root.setKey((K) temp.getKey());
+                root.setValue((V) temp.getValue());
 
                 root.setRight(deleteMin(root.getRight()));
             } else {
@@ -268,7 +267,7 @@ public class RedBlackTree<Key extends Comparable<Key>, Value> {
         return balance(root);
     }
 
-    private RBNode<Key, Value> min(RBNode<Key, Value> root) {
+    private RBNode<K, V> min(RBNode<K, V> root) {
 
         while (root.getLeft() != null) {
             root = root.getLeft();
@@ -277,17 +276,17 @@ public class RedBlackTree<Key extends Comparable<Key>, Value> {
 
     }
 
-    private boolean contains(Key key) {
+    private boolean contains(K key) {
         return get(key) != null;
     }
 
-    private RBNode<Key, Value> get(Key key) {
+    private RBNode<K, V> get(K key) {
         if (key == null) throw new IllegalArgumentException("argument to get() is null");
         return get(root, key);
     }
 
-    private RBNode<Key, Value> get(RBNode<Key, Value> root, Key key) {
-        RBNode<Key, Value> result = null;
+    private RBNode<K, V> get(RBNode<K, V> root, K key) {
+        RBNode<K, V> result = null;
         while (root != null) {
             int compareTo = key.compareTo(root.getKey());
             if (compareTo == 0) {

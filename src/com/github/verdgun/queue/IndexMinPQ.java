@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 /**
  * @param <Item> 元素类型
  */
-public class IndexMinPQ<Item extends Comparable> {
+public class IndexMinPQ<Item extends Comparable<Item>> {
 
 
     /**

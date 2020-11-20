@@ -1,9 +1,9 @@
 package com.github.verdgun.sort;
 
-public class Shell implements ISort {
+public class Shell<T extends Comparable<T>> implements ISort<T> {
 
     @Override
-    public Comparable[] sort(Comparable[] unsorted) {
+    public T[] sort(T[] unsorted) {
         int length = unsorted.length;
         int h = 1;
         while (h < length / 3) {
@@ -12,7 +12,7 @@ public class Shell implements ISort {
 
         while (h >= 1) {
             for (int i = h; i < length; i++) {
-                Comparable currentElem = unsorted[i];
+                T currentElem = unsorted[i];
                 int j = i;
                 for (; j >= h; j -= h) {
                     if (less(currentElem, unsorted[j - h])) {

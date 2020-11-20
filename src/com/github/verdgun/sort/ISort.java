@@ -1,11 +1,13 @@
 package com.github.verdgun.sort;
 
+import static java.lang.System.*;
+
 /**
  * 排序算法接口
  *
  * @param <T> 可比较类型
  */
-public interface ISort<T extends Comparable> {
+public interface ISort<T extends Comparable<T>> {
     int INSERTION_SORT_CUTOFF = 8;
 
     T[] sort(T[] unsorted);
@@ -14,16 +16,16 @@ public interface ISort<T extends Comparable> {
         return v.compareTo(w) < 0;
     }
 
-    default void exch(T[] a, int i, int j) {
+    default void exchange(T[] a, int i, int j) {
         T temp = a[i];
         a[i] = a[j];
         a[j] = temp;
     }
 
     default void show(T[] a) {
-        System.out.println("array ");
+        out.println("array ");
         for (T T : a) {
-            System.out.printf("%s \t", T);
+            out.printf("%s \t", T);
         }
     }
 

@@ -7,8 +7,8 @@ import java.util.List;
  * 二叉查找树
  * BinarySearchTree
  */
-public class BST<Key extends Comparable<Key>, Value> {
-    private Node<Key, Value> root;
+public class BST<K extends Comparable<K>, V> {
+    private Node<K, V> root;
 
     public int size() {
         if (root == null) {
@@ -18,20 +18,20 @@ public class BST<Key extends Comparable<Key>, Value> {
         return root.getSize();
     }
 
-    public Value get(Key key) {
+    public V get(K key) {
         if (key == null) {
             throw new IllegalArgumentException("key can not be null!");
         }
         return get(root, key);
     }
 
-    private Value get(Node<Key, Value> root, Key key) {
+    private V get(Node<K, V> root, K key) {
         if (root == null) {
             return null;
         }
 
-        var compare = key.compareTo(root.getKey());
-        Value res;
+        int compare = key.compareTo(root.getKey());
+        V res;
         if (compare == 0) {
             res = root.getValue();
         } else if (compare < 0) {
@@ -42,41 +42,40 @@ public class BST<Key extends Comparable<Key>, Value> {
         return res;
     }
 
-    public void put(Key key, Value value) {
+    public void put(K key, V value) {
         if (key == null || value == null) {
             throw new IllegalArgumentException("key or value can not be null!");
         }
         root = put(root, key, value);
     }
 
-    private Node<Key, Value> put(Node<Key, Value> root, Key key, Value value) {
+    private Node<K, V> put(Node<K, V> root, K key, V value) {
         if (root == null) {
             return new Node<>(1, key, value);
         }
 
-        var compare = key.compareTo(root.getKey());
+        int compare = key.compareTo(root.getKey());
         if (compare == 0) {
             root.setValue(value);
         } else if (compare < 0) {
-            Node<Key, Value> node = put(root.getLeft(), key, value);
+            Node<K, V> node = put(root.getLeft(), key, value);
             root.setLeft(node);
             root.setSize(root.getSize() + 1);
             node.setParent(root);
         } else {
-            Node<Key, Value> node = put(root.getRight(), key, value);
+            Node<K, V> node = put(root.getRight(), key, value);
             root.setRight(node);
             root.setSize(root.getSize() + 1);
             node.setParent(root);
         }
-//        root.setSize(root.getLeft().getSize() + root.getRight().getSize() + 1);
         return root;
     }
 
-    public Key min() {
+    public K min() {
         return min(root).getKey();
     }
 
-    private Node<Key, Value> min(Node<Key, Value> root) {
+    private Node<K, V> min(Node<K, V> root) {
         if (root.getLeft() == null) {
             return root;
         }
@@ -87,11 +86,11 @@ public class BST<Key extends Comparable<Key>, Value> {
     /**
      * @return 小于等于Key的元素中最大的那一个
      */
-    public Key floor(Key key) {
+    public K floor(K key) {
         if (key == null) {
             throw new IllegalArgumentException("key or value can not be null!");
         }
-        Node<Key, Value> x = floor(root, key);
+        Node<K, V> x = floor(root, key);
         if (x == null) {
             return null;
         }
@@ -99,7 +98,7 @@ public class BST<Key extends Comparable<Key>, Value> {
         return x.getKey();
     }
 
-    private Node<Key, Value> floor(Node<Key, Value> root, Key key) {
+    private Node<K, V> floor(Node<K, V> root, K key) {
         if (root == null) {
             return null;
         }
@@ -110,7 +109,7 @@ public class BST<Key extends Comparable<Key>, Value> {
             return floor(root.getLeft(), key);
         }
 
-        Node<Key, Value> floor = floor(root.getRight(), key);
+        Node<K, V> floor = floor(root.getRight(), key);
         if (floor == null) {
             return root;
         }
@@ -121,15 +120,15 @@ public class BST<Key extends Comparable<Key>, Value> {
      * @param key 待查找的key
      * @return 大于等于key的元素中最小的那一个;
      */
-    public Key ceiling(Key key) {
-        Node<Key, Value> node = ceiling(root, key);
+    public K ceiling(K key) {
+        Node<K, V> node = ceiling(root, key);
         if (node == null) {
             return null;
         }
         return node.getKey();
     }
 
-    private Node<Key, Value> ceiling(Node<Key, Value> root, Key key) {
+    private Node<K, V> ceiling(Node<K, V> root, K key) {
         if (key == null) {
             throw new IllegalArgumentException("key or value can not be null!");
         }
@@ -155,16 +154,16 @@ public class BST<Key extends Comparable<Key>, Value> {
      * @param k 排序序号
      * @return 第(k + 1)个最小键
      */
-    public Key select(int k) {
+    public K select(int k) {
         if (k >= root.getSize() || k < 0) {
             throw new IllegalArgumentException("argument to select() is invalid: " + "k");
         }
-        Node<Key, Value> select = select(root, k);
+        Node<K, V> select = select(root, k);
 
         return select.getKey();
     }
 
-    private Node<Key, Value> select(Node<Key, Value> root, int k) {
+    private Node<K, V> select(Node<K, V> root, int k) {
         if (root == null) {
             return null;
         }
@@ -182,20 +181,20 @@ public class BST<Key extends Comparable<Key>, Value> {
 
     }
 
-    private int size(Node<Key, Value> root) {
+    private int size(Node<K, V> root) {
         if (root == null) {
             return 0;
         }
         return root.getSize();
     }
-    public int rank(Key key) {
+    public int rank(K key) {
         if (key == null) {
             throw new IllegalArgumentException("key can not be null");
         }
         return rank(root, key);
     }
 
-    private int rank(Node<Key, Value> root, Key key) {
+    private int rank(Node<K, V> root, K key) {
         if (root == null) {
             return 0;
         }
@@ -214,7 +213,7 @@ public class BST<Key extends Comparable<Key>, Value> {
         root = deleteMin(root);
     }
 
-    private Node<Key, Value> deleteMin(Node<Key, Value> root) {
+    private Node<K, V> deleteMin(Node<K, V> root) {
         if (root.getLeft() == null) {
             root.getRight().setParent(root.getParent());
             return root.getRight();
@@ -228,7 +227,7 @@ public class BST<Key extends Comparable<Key>, Value> {
         root = deleteMax(root);
     }
 
-    private Node<Key, Value> deleteMax(Node<Key, Value> root) {
+    private Node<K, V> deleteMax(Node<K, V> root) {
         if (root.getRight() == null) {
             root.getLeft().setParent(root.getParent());
             return root.getLeft();
@@ -239,18 +238,18 @@ public class BST<Key extends Comparable<Key>, Value> {
         return root;
     }
 
-    public void delete(Key key) {
+    public void delete(K key) {
         root = delete(root, key);
     }
 
-    private Node<Key, Value> delete(Node<Key, Value> root, Key key) {
+    private Node<K, V> delete(Node<K, V> root, K key) {
         if (root == null) {
             return null;
         }
 
         int compare = key.compareTo(root.getKey());
         if (compare < 0) {
-            Node<Key, Value> subRoot = delete(root.getLeft(), key);
+            Node<K, V> subRoot = delete(root.getLeft(), key);
             root.setLeft(subRoot);
             if (subRoot != null) {
                 subRoot.setParent(root);
@@ -258,7 +257,7 @@ public class BST<Key extends Comparable<Key>, Value> {
 
 
         } else if (compare > 0) {
-            Node<Key, Value> subRoot = delete(root.getRight(), key);
+            Node<K, V> subRoot = delete(root.getRight(), key);
             root.setRight(subRoot);
             if (subRoot != null) {
                 subRoot.setParent(root);
@@ -272,10 +271,10 @@ public class BST<Key extends Comparable<Key>, Value> {
                 return root.getRight();
             }
 
-            Node temp = root;
+            Node<K, V> temp = root;
             root = min(root.getRight());
 
-            Node left = temp.getLeft();
+            Node<K, V> left = temp.getLeft();
             left.setParent(root);
             root.setLeft(left);
 
@@ -287,17 +286,17 @@ public class BST<Key extends Comparable<Key>, Value> {
         return root;
     }
 
-    public Iterable<Key> keys() {
+    public Iterable<K> keys() {
         return keys(min(), max());
     }
 
-    private Iterable<Key> keys(Key min, Key max) {
-        List<Key> list = new LinkedList<>();
+    private Iterable<K> keys(K min, K max) {
+        List<K> list = new LinkedList<>();
         keys(root, list, min, max);
         return list;
     }
 
-    private void keys(Node<Key, Value> root, List<Key> list, Key lo, Key hi) {
+    private void keys(Node<K, V> root, List<K> list, K lo, K hi) {
         if (root == null) {
             return;
         }
@@ -315,11 +314,11 @@ public class BST<Key extends Comparable<Key>, Value> {
         }
     }
 
-    private Key max() {
+    private K max() {
         return max(root);
     }
 
-    private Key max(Node<Key, Value> root) {
+    private K max(Node<K, V> root) {
         if (root.getRight() != null) {
             return max(root.getRight());
         }

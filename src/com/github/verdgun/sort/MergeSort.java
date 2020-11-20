@@ -3,7 +3,7 @@ package com.github.verdgun.sort;
 /**
  * 归并排序
  */
-public class MergeSort implements ISort {
+public class MergeSort<T extends Comparable<T>> implements ISort<T> {
     /**
      * 自顶向下归并排序
      *
@@ -11,16 +11,16 @@ public class MergeSort implements ISort {
      * @return 已排序数组
      */
     @Override
-    public Comparable[] sort(Comparable[] unsorted) {
-        Comparable[] temp = new Comparable[unsorted.length];
+    public T[] sort(T[] unsorted) {
+        Object[] temp = new Object[unsorted.length];
         return sort(unsorted, 0, unsorted.length - 1, temp);
     }
 
-    private Comparable[] sort(Comparable[] unsorted, int lo, int hi, Comparable[] temp) {
+    private T[] sort(T[] unsorted, int lo, int hi, Object[] temp) {
         if (hi <= lo) return unsorted;
         //优化2.2.2.1: 如果数组长度小于17,则直接用插入排序
         if ((hi - lo + 1) < 17) {
-            return (new InsertSort()).sort(unsorted);
+            return (new InsertSort<T>()).sort(unsorted);
         }
 
         int mid = lo + (hi - lo) / 2;
@@ -37,7 +37,7 @@ public class MergeSort implements ISort {
         return unsorted;
     }
 
-    protected void merge(Comparable[] sorted, int lo, int mid, int hi, Comparable[] temp) {
+    protected void merge(T[] sorted, int lo, int mid, int hi, Object[] temp) {
         int k = lo, i = lo, j = mid + 1;
         int length = hi - lo + 1;
         for (; k <= hi; k++) {
@@ -52,6 +52,7 @@ public class MergeSort implements ISort {
             }
         }
 
+        //noinspection SuspiciousSystemArraycopy
         System.arraycopy(temp, lo, sorted, lo, length);
     }
 }

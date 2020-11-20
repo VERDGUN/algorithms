@@ -4,9 +4,9 @@ package com.github.verdgun.sort;
 /**
  * 选择排序
  */
-public class SelectionSort implements ISort {
+public class SelectionSort<T extends Comparable<T>> implements ISort<T> {
     @Override
-    public Comparable[] sort(Comparable[] unsorted) {
+    public T[] sort(T[] unsorted) {
         for (int i = 0; i < unsorted.length - 1; i++) {
             int min = i;
             for (int j = i + 1; j < unsorted.length; j++) {
@@ -15,7 +15,7 @@ public class SelectionSort implements ISort {
                 }
             }
 
-            exch(unsorted, min, i);
+            exchange(unsorted, min, i);
         }
 
         return unsorted;

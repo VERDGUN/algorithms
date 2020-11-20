@@ -89,7 +89,7 @@ public class BasicGraph {
     public static long maxDegree(BasicGraph graph) {
         long max = 0;
         for (int i = 0; i < graph.v; i++) {
-            var temp = degree(graph, i);
+            long temp = degree(graph, i);
             if (temp > max) {
                 max = temp;
             }

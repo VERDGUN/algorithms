@@ -3,15 +3,15 @@ package com.github.verdgun.sort;
 /**
  * 插入排序
  */
-public class InsertSort implements ISort {
+public class InsertSort<T extends Comparable<T>> implements ISort<T> {
     @Override
-    public Comparable[] sort(Comparable[] unsorted) {
+    public T[] sort(T[] unsorted) {
         return sort(unsorted, 0, unsorted.length - 1);
     }
 
-    public Comparable[] sort(Comparable[] unsorted, int lo, int hi) {
+    public T[] sort(T[] unsorted, int lo, int hi) {
         for (int i = lo + 1; i <= hi; i++) {
-            Comparable current = unsorted[i];
+            T current = unsorted[i];
             int j = i;
             for (; j > 0; j--) {
                 if (less(current, unsorted[j - 1])) {
