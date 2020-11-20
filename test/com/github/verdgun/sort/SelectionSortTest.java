@@ -20,9 +20,9 @@ class SelectionSortTest {
         selectionSort.sort(a);
         selectionSort.show(a);*/
 
-        (new SelectionSort()).sort(a);
-        for (int i = 0; i < a.length; i++) {
-            System.out.print(a[i] + ", ");
+        (new SelectionSort<Integer>()).sort(a);
+        for (Integer integer : a) {
+            System.out.print(integer + ", ");
         }
     }
 }
