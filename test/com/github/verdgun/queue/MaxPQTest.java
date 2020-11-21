@@ -2,26 +2,25 @@ package com.github.verdgun.queue;
 
 import java.util.HashSet;
 import java.util.Random;
+import java.util.StringJoiner;
+import java.util.StringTokenizer;
 
 public class MaxPQTest {
     @org.junit.jupiter.api.Test
     void sort() {
-        int n = 30;
-        HashSet<Integer> integers = new HashSet<>();
-        while (integers.size() < n) {
-            Random random = new Random(System.currentTimeMillis());
-            integers.add(random.nextInt(10000));
+        int n = 10;
+        MaxPQ<Integer> maxPQ = new MaxPQ<>(n, Integer::compareTo);
+        Random random = new Random(System.currentTimeMillis());
+        for (int i = 0; i < n; i++) {
+            maxPQ.insert(random.nextInt(100));
         }
-        System.out.println(integers);
-        Integer[] a = integers.toArray(new Integer[]{});
 
-/*        InsertSort selectionSort = new InsertSort();
-        selectionSort.sort(a);
-        selectionSort.show(a);*/
-        MaxPQ<Integer> maxPQ = new MaxPQ<>(n,Integer::compareTo);
-        integers.forEach(i -> maxPQ.insert(i));
-        for (int i = 0; i < a.length; i++) {
-            System.out.print(maxPQ.delMax() + ", ");
+        final StringJoiner stringJoiner = new StringJoiner(",", "[", "]");
+        for (int i = 0; i < n; i++) {
+            final String newElement = maxPQ.delMax().toString();
+            System.out.println(newElement);
+            stringJoiner.add(newElement);
         }
+        System.out.println(stringJoiner);
     }
 }

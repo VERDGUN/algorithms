@@ -5,9 +5,9 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 /**
- * @param <Item> 元素类型
+ * @param <K> 元素类型
  */
-public class IndexMinPQ<Item extends Comparable<Item>> {
+public class IndexMinPQ<K extends Comparable<K>> {
 
 
     /**
@@ -23,33 +23,40 @@ public class IndexMinPQ<Item extends Comparable<Item>> {
     /**
      * 保存索引对应的Item实例
      */
-    private Item[] keys;
+    private K[] keys;
     /**
      * 索引队列的最大长度,指明了最多能保存多少个元素
      */
     private int maxLength;
-
+    private int size;
     /**
      * 优先队列的长度
      */
-    private int priorityQueueLength = 0;
+    private int priorityQueueLength;
 
-    public IndexMinPQ(int maxLength, Class<Item> klass) {
+    public IndexMinPQ(int maxLength, Class<K> klass) {
         this.maxLength = maxLength;
         this.priorityQueue = new int[maxLength + 1];
         this.indexes = new int[maxLength];
-        this.keys = (Item[]) Array.newInstance(klass, maxLength);
+        this.keys = (K[]) Array.newInstance(klass, maxLength);
 
         Arrays.fill(indexes, -1);
     }
 
-    public void insert(int index, Item item) {
+    public int put(K item) {
+        insert(++size, item);
+        return size;
+    }
+
+    private void insert(int index, K item) {
         validateIndex(index);
         if (constains(index)) throw new IllegalArgumentException("index is already in the priority queue");
-        priorityQueueLength++;
-        priorityQueue[priorityQueueLength] = index;
-        indexes[index] = priorityQueueLength;
+        //存值
         keys[index] = item;
+
+        //优先队列不直接存值，而是存keys数组的下标
+        priorityQueue[++priorityQueueLength] = index;
+        indexes[index] = priorityQueueLength;
         swim(priorityQueueLength);
     }
 
@@ -68,8 +75,8 @@ public class IndexMinPQ<Item extends Comparable<Item>> {
         indexes[priorityQueue[k]] = k;
     }
 
-    private boolean greater(int i, int i1) {
-        return keys[priorityQueue[i]].compareTo(keys[priorityQueue[i1]]) > 0;
+    private boolean greater(int o, int other) {
+        return keys[priorityQueue[o]].compareTo(keys[priorityQueue[other]]) > 0;
     }
 
     private void validateIndex(int index) {
@@ -77,7 +84,7 @@ public class IndexMinPQ<Item extends Comparable<Item>> {
         if (index >= maxLength) throw new IllegalArgumentException("index >= capacity: " + index);
     }
 
-    public void change(int index, Item key) {
+    public void change(int index, K key) {
         if (!constains(index)) throw new NoSuchElementException("index is not in the priority queue");
         int index1 = indexes[index];
         keys[index] = key;
