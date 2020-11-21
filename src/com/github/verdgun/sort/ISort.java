@@ -12,7 +12,7 @@ public interface ISort<T extends Comparable<T>> {
 
     T[] sort(T[] unsorted);
 
-    default boolean less(T v, T w) {
+    default boolean lessThen(T v, T w) {
         return v.compareTo(w) < 0;
     }
 
@@ -31,7 +31,7 @@ public interface ISort<T extends Comparable<T>> {
 
     default boolean isSorted(T[] a) {
         for (int i = 0; i < a.length - 1; i++) {
-            if (less(a[i], a[i + 1])) {
+            if (lessThen(a[i], a[i + 1])) {
                 return false;
             }
         }
