@@ -19,24 +19,32 @@ public class QuickSort<T extends Comparable<T>> implements ISort<T> {
         return unsorted;
     }
 
+    /**
+     * 将数组中lo...hi中的元素进行分区（按照第一个元素为标准）
+     *
+     * @param unsorted 待排序数组
+     * @param lo       数组起始下标
+     * @param hi       数组结束下标
+     * @return 第一个元素在分区后的数组中的位置
+     */
     private int partition(T[] unsorted, int lo, int hi) {
-        T v = unsorted[lo];
-        int i = lo, j = hi + 1;
-        //循环结束时unsorted[1...j]均小于等于v,unsorted[(j+1),hi]均大于等于v.
+        T current = unsorted[lo];
+        int lessIndex = lo, greateIndex = hi + 1;
+        //循环结束时unsorted[lo+1...greateIndex]均小于等于current,unsorted[(greateIndex+1),hi]均大于等于v.
         while (true) {
-            //此内循环结束时unsorted[j]>=v
-            while (less(unsorted[++i], v)) if (i == hi) break;
+            //此内循环结束时unsorted[lessIndex]>=current
+            while (lessThen(unsorted[++lessIndex], current)) if (lessIndex == hi) break;
 
-            //此内循环结束时unsorted[j]<=v
-            while (less(v, unsorted[--j])) if (j == lo) break;
+            //此内循环结束时unsorted[greateIndex]<=current
+            while (lessThen(current, unsorted[--greateIndex])) if (greateIndex == lo) break;
 
-            if (i >= j) break;
-            exchange(unsorted, i, j);
+            if (lessIndex >= greateIndex) break;
+            exchange(unsorted, lessIndex, greateIndex);
         }
 
-        //将v和unsorted[j]互换,保证unsorted[lo...(j-1)]均小于等于v,unsorted[(j+1)...hi]大于等于v
-        exchange(unsorted, lo, j);
+        //将v和unsorted[greateIndex]互换,保证unsorted[lo...(greateIndex-1)]均小于等于v,unsorted[(greateIndex+1)...hi]大于等于v
+        exchange(unsorted, lo, greateIndex);
 
-        return j;
+        return greateIndex;
     }
 }
