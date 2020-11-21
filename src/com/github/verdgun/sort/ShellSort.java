@@ -1,12 +1,16 @@
 package com.github.verdgun.sort;
 
-public class Shell<T extends Comparable<T>> implements ISort<T> {
+/**
+ * 希尔排序
+ */
+public class ShellSort<T extends Comparable<T>> implements ISort<T> {
 
     @Override
     public T[] sort(T[] unsorted) {
         int length = unsorted.length;
         int h = 1;
-        while (h < length / 3) {
+        int hope = length / 3;
+        while (h < hope) {
             h = 3 * h + 1;
         }
 
@@ -15,7 +19,7 @@ public class Shell<T extends Comparable<T>> implements ISort<T> {
                 T currentElem = unsorted[i];
                 int j = i;
                 for (; j >= h; j -= h) {
-                    if (less(currentElem, unsorted[j - h])) {
+                    if (lessThen(currentElem, unsorted[j - h])) {
                         //较大的元素向右移动一位
                         unsorted[j] = unsorted[j - h];
                     } else {
