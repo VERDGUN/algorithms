@@ -30,7 +30,7 @@ public class MergeSort<T extends Comparable<T>> implements ISort<T> {
 
         //优化2.2.2.2: 数组unsorted[lo...mid],unsorted[mid+1...hi]已经排好序,如果unsorted[mid]<unsorted[mid+1],说明unsorted[lo...mid]中的任意一个元素都小于unsorted[mid+1...hi]中的任意一个元素
         //也就说明数组unsorted[lo...hi]已经是有序数组,不需要合并操作.
-        if (unsorted[mid].compareTo(unsorted[mid + 1]) < 0)
+        if (lessThen(unsorted[mid], unsorted[mid + 1]))
             return unsorted;
         else merge(unsorted, lo, mid, hi, temp);
 
@@ -38,21 +38,23 @@ public class MergeSort<T extends Comparable<T>> implements ISort<T> {
     }
 
     protected void merge(T[] sorted, int lo, int mid, int hi, Object[] temp) {
-        int k = lo, i = lo, j = mid + 1;
-        int length = hi - lo + 1;
-        for (; k <= hi; k++) {
-            if (i > mid) {
-                temp[k] = sorted[j++];
-            } else if (j > hi) {
-                temp[k] = sorted[i++];
-            } else if (less(sorted[i], sorted[j])) {
-                temp[k] = sorted[i++];
+        int i = lo, j = lo, k = mid + 1;
+        for (; i <= hi; i++) {
+            //j > mid说明sorted[lo...mid]中的元素已经排好序，直接将sorted[mid+1...hi]剩余的元素放入数组中即可
+            if (j > mid) {
+                temp[i] = sorted[k++];
+            }
+            //k > hi说明sorted[mid+1...hi]中的元素已经排好序，直接将sorted[lo...mid]剩余的元素放入数组中即可
+            else if (k > hi) {
+                temp[i] = sorted[j++];
+            } else if (lessThen(sorted[j], sorted[k])) {
+                temp[i] = sorted[j++];
             } else {
-                temp[k] = sorted[j++];
+                temp[i] = sorted[k++];
             }
         }
 
         //noinspection SuspiciousSystemArraycopy
-        System.arraycopy(temp, lo, sorted, lo, length);
+        System.arraycopy(temp, lo, sorted, lo, hi - lo + 1);
     }
 }
